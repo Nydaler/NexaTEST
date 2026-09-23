@@ -17,12 +17,15 @@
                     },
                     colors: {
                         nexa: {
-                            black: '#0a0a0a',
-                            dark: '#121212',
-                            card: '#1a1a1a',
-                            border: '#2a2a2a',
+                            black: '#030303',
+                            dark: '#0a0a0a',
+                            card: '#121212',
+                            border: '#222222',
                             accent: '#ffffff',
                         }
+                    },
+                    animation: {
+                        'spin-slow': 'spin 8s linear infinite',
                     }
                 }
             }
@@ -39,73 +42,64 @@
 
     <style>
         body {
-            background-color: #050505;
+            background-color: #030303;
             color: #ffffff;
             font-family: 'Outfit', sans-serif;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Fondo Animado de Orbes */
+        /* Fondo Animado de Orbes Premium */
         .ambient-background {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            inset: 0;
             z-index: -1;
-            background: #050505;
+            background: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #030303 70%);
             overflow: hidden;
         }
 
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
+            filter: blur(100px);
+            opacity: 0.5;
             animation: float 20s infinite ease-in-out alternate;
         }
 
-        .orb-1 {
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.15);
-            top: -100px;
-            left: -100px;
-        }
-
-        .orb-2 {
-            width: 400px;
-            height: 400px;
-            background: rgba(100, 100, 100, 0.1);
-            bottom: -150px;
-            right: -100px;
-            animation-delay: -5s;
-        }
+        .orb-1 { width: 40vw; height: 40vw; background: rgba(255, 255, 255, 0.05); top: -10vw; left: -10vw; }
+        .orb-2 { width: 50vw; height: 50vw; background: rgba(80, 80, 80, 0.05); bottom: -20vw; right: -10vw; animation-delay: -5s; }
 
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(30px, 50px) scale(1.1); }
-            100% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        /* Tarjeta Principal Glassmorphism (Simula la tarjeta física) */
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 30, 30, 0.4) 0%, rgba(10, 10, 10, 0.8) 100%);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         /* Pantalla de Carga NFC (Innovación) */
         #nfc-intro {
             position: fixed;
             inset: 0;
-            background: #000;
+            background: #030303;
             z-index: 100;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
         }
 
-        .nfc-waves-loader {
+        .nfc-waves {
             position: relative;
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -113,77 +107,72 @@
 
         .wave-ring {
             position: absolute;
-            border: 2px solid rgba(255,255,255,0.8);
+            border: 1px solid rgba(255,255,255,0.6);
             border-radius: 50%;
-            animation: wavePulse 1.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+            animation: wavePulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
             opacity: 0;
         }
-        .wave-ring:nth-child(2) { animation-delay: 0.3s; }
-        .wave-ring:nth-child(3) { animation-delay: 0.6s; }
+        .wave-ring:nth-child(2) { animation-delay: 0.4s; }
+        .wave-ring:nth-child(3) { animation-delay: 0.8s; }
 
         @keyframes wavePulse {
-            0% { width: 20px; height: 20px; opacity: 1; border-width: 3px; }
-            100% { width: 100px; height: 100px; opacity: 0; border-width: 1px; }
+            0% { width: 30px; height: 30px; opacity: 1; border-width: 2px; }
+            100% { width: 120px; height: 120px; opacity: 0; border-width: 0px; }
         }
 
-        /* Glassmorphism Premium */
-        .glass-card {
-            background: rgba(20, 20, 20, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Animación de entrada de elementos */
+        /* Animaciones de entrada escalonadas */
         .stagger-item {
             opacity: 0;
-            transform: translateY(20px);
-            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         @keyframes fadeUp {
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Botones Interactivos Premium */
+        /* Botones Interactivos Premium (Destello y Magnetismo) */
         .nexa-btn {
             position: relative;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.05);
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .nexa-btn::before {
+        /* Efecto Shimmer (Destello constante) */
+        .nexa-btn::after {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
+            left: -150%;
             width: 50%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
-            transform: skewX(-20deg);
-            transition: left 0.7s ease;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transform: skewX(-25deg);
+            animation: shimmer 4s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -150%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
         }
 
         .nexa-btn:hover, .nexa-btn:active {
-            transform: translateY(-4px) scale(1.02);
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 10px 30px -10px rgba(255, 255, 255, 0.1);
-        }
-
-        .nexa-btn:hover::before, .nexa-btn:active::before {
-            left: 200%;
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5);
         }
 
         .icon-box {
-            transition: transform 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
         .nexa-btn:hover .icon-box {
-            transform: scale(1.15) rotate(-5deg);
+            transform: scale(1.1) rotate(-5deg);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         /* Utilidades para los Modales */
@@ -198,21 +187,31 @@
             visibility: visible;
             transform: scale(1);
         }
+
+        /* Custom Scrollbar para el Admin */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col relative selection:bg-white selection:text-black">
 
+    <!-- Intro Animada NFC -->
     <div id="nfc-intro">
-        <div class="nfc-waves-loader mb-6">
+        <div class="nfc-waves mb-8">
             <div class="wave-ring"></div>
             <div class="wave-ring"></div>
             <div class="wave-ring"></div>
-            <i class="ph ph-cell-signal-high text-4xl text-white absolute"></i>
+            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center z-10 shadow-[0_0_30px_rgba(255,255,255,0.3)]">
+                <img src="image_25c2b9.png" class="w-6 h-6 object-contain" alt="Nexa" onerror="this.src='https://placehold.co/100x100/000000/ffffff?text=N'">
+            </div>
         </div>
-        <h2 class="text-white font-bold tracking-widest uppercase text-sm animate-pulse">Conexión Segura</h2>
-        <p class="text-gray-500 text-xs mt-2">Leyendo chip NFC...</p>
+        <h2 class="text-white font-bold tracking-[0.3em] uppercase text-xs animate-pulse">Conectando Dispositivo</h2>
+        <p class="text-gray-500 text-[10px] mt-3 uppercase tracking-widest">Leyendo Chip Seguro</p>
     </div>
 
+    <!-- Fondo de Orbes -->
     <div class="ambient-background">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
@@ -220,351 +219,397 @@
 
     <main class="flex-grow flex flex-col items-center justify-center w-full max-w-md mx-auto px-5 py-10 relative z-10">
         
-        <!-- Tarjeta Principal Glassmorphism -->
-        <div class="glass-card w-full rounded-[2rem] p-8 flex flex-col items-center stagger-item" style="animation-delay: 1.5s;">
+        <!-- Tarjeta Principal (Simulando la física) -->
+        <div class="glass-card w-full rounded-[2.5rem] p-8 flex flex-col items-center stagger-item relative overflow-hidden" style="animation-delay: 1s;">
             
-            <!-- Contenedor del Logo (Simula el grabado en la tarjeta 3D) -->
-            <div class="relative group">
-                <div class="absolute -inset-1 bg-gradient-to-r from-gray-600 to-gray-400 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                <div class="relative bg-white rounded-3xl p-3 shadow-2xl border border-gray-100 flex items-center justify-center overflow-hidden w-28 h-28 transform transition-transform duration-500 hover:scale-105">
-                    <img src="image_25c2b9.png" alt="NEXA Logo" class="w-full h-full object-contain object-center" onerror="this.src='https://placehold.co/400x400/ffffff/1a1a1a?text=NEXA'">
+            <!-- Reflejo superior -->
+            <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-white/5 to-transparent"></div>
+            
+            <!-- Contenedor del Logo (3D Embossed Effect) -->
+            <div class="relative group mt-4 z-10">
+                <div class="absolute -inset-2 bg-gradient-to-r from-gray-500 to-gray-300 rounded-3xl blur-lg opacity-20 group-hover:opacity-40 transition duration-700"></div>
+                <div class="relative bg-[#0a0a0a] rounded-3xl p-4 shadow-[inset_0_2px_15px_rgba(255,255,255,0.05),0_15px_35px_rgba(0,0,0,0.5)] border border-white/5 flex items-center justify-center overflow-hidden w-28 h-28 transform transition-transform duration-500 group-hover:scale-[1.03]">
+                    <img src="image_25c2b9.png" alt="NEXA Logo" class="w-full h-full object-contain filter invert" onerror="this.src='https://placehold.co/400x400/000000/ffffff?text=NEXA'">
                 </div>
             </div>
             
             <!-- Textos de Marca -->
-            <div class="text-center mt-6 mb-8 w-full">
-                <h1 class="text-3xl font-extrabold tracking-tight text-white">NEXA</h1>
-                <div class="h-px w-12 bg-white/20 mx-auto my-3"></div>
-                <p class="text-xs font-semibold text-gray-400 tracking-[0.2em] uppercase">
+            <div class="text-center mt-8 mb-10 w-full z-10">
+                <h1 class="text-3xl font-extrabold tracking-tight text-white mb-2">NEXA</h1>
+                <p class="text-[10px] font-semibold text-gray-400 tracking-[0.25em] uppercase">
                     Tu negocio, a un toque
                 </p>
             </div>
 
             <!-- Contenedor Dinámico de Botones -->
-            <div id="links-container" class="w-full flex flex-col gap-3">
-                <!-- Los botones se inyectan vía JS para controlar los delays de animación -->
+            <div id="links-container" class="w-full flex flex-col gap-3 z-10">
+                <!-- Se inyectan vía JS -->
             </div>
         </div>
 
-        <div class="mt-8 stagger-item" style="animation-delay: 2.2s;">
-            <button onclick="showLogin()" class="text-[10px] font-semibold text-gray-600 hover:text-white transition-colors flex items-center justify-center gap-1.5 px-4 py-2 uppercase tracking-widest">
-                <i class="ph-bold ph-lock-key"></i> Portal Nexa
+        <!-- Acceso Oculto Admin -->
+        <div class="mt-10 stagger-item" style="animation-delay: 1.8s;">
+            <button onclick="showLogin()" class="text-[9px] font-semibold text-gray-600 hover:text-white transition-colors flex items-center justify-center gap-1.5 px-4 py-2 uppercase tracking-[0.2em]">
+                <i class="ph-fill ph-lock-key text-xs"></i> Portal Propietario
             </button>
         </div>
     </main>
 
-    <div id="login-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex flex-col items-center justify-center p-6 modal-enter">
-        <button onclick="hideLogin()" class="absolute top-6 right-6 text-gray-400 hover:text-white p-2 transition-colors">
+    <!-- Modal Login -->
+    <div id="login-overlay" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 flex flex-col items-center justify-center p-6 modal-enter">
+        <button onclick="hideLogin()" class="absolute top-6 right-6 text-gray-500 hover:text-white p-2 transition-colors">
             <i class="ph ph-x text-2xl"></i>
         </button>
         
-        <div class="glass-card w-full max-w-sm rounded-[2rem] p-8">
+        <div class="glass-card w-full max-w-sm rounded-[2rem] p-8 border border-white/10">
             <div class="text-center mb-8">
-                <div class="w-14 h-14 bg-white/10 rounded-2xl mx-auto flex items-center justify-center mb-4 border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-                    <i class="ph-fill ph-fingerprint text-2xl text-white"></i>
+                <div class="w-16 h-16 bg-white/5 rounded-2xl mx-auto flex items-center justify-center mb-5 border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.05)]">
+                    <i class="ph-fill ph-shield-check text-3xl text-white"></i>
                 </div>
-                <h2 class="text-xl font-bold text-white">Identidad Requerida</h2>
-                <p class="text-gray-400 text-xs mt-2">Acceso exclusivo para propietarios.</p>
+                <h2 class="text-xl font-bold text-white tracking-wide">Acceso Seguro</h2>
+                <p class="text-gray-400 text-xs mt-2 font-light">Configuración del chip NFC</p>
             </div>
 
             <form id="login-form" class="flex flex-col gap-4">
                 <div>
-                    <input type="password" id="admin-password" class="w-full bg-nexa-dark border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-gray-600 focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/40 transition-all text-center tracking-[0.5em] font-mono text-lg" placeholder="••••">
-                    <p id="login-error" class="text-red-400 text-xs mt-2 hidden font-medium text-center">Credenciales incorrectas.</p>
+                    <input type="password" id="admin-password" class="w-full bg-[#050505] border border-white/10 rounded-xl px-4 py-4 text-white placeholder-gray-700 focus:outline-none focus:border-white/30 focus:ring-1 focus:ring-white/30 transition-all text-center tracking-[0.5em] font-mono text-lg shadow-inner" placeholder="••••">
+                    <p id="login-error" class="text-red-400 text-[10px] mt-2 hidden font-medium text-center uppercase tracking-widest">Contraseña incorrecta</p>
                 </div>
-                <button type="submit" class="w-full bg-white text-black rounded-xl px-4 py-3.5 font-bold hover:bg-gray-200 transition-colors mt-2 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]">
+                <button type="submit" class="w-full bg-white text-black rounded-xl px-4 py-4 font-bold hover:bg-gray-200 transition-all mt-2 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] active:scale-95">
                     Desbloquear Sistema
                 </button>
             </form>
-            <p class="text-[10px] text-gray-600 text-center mt-6 uppercase tracking-widest">(Demo Pass: admin)</p>
+            <p class="text-[9px] text-gray-600 text-center mt-6 uppercase tracking-[0.2em]">(Demo Pass: admin)</p>
         </div>
     </div>
 
-    <div id="admin-overlay" class="fixed inset-0 bg-nexa-black z-50 flex flex-col modal-enter overflow-y-auto">
+    <!-- Portal Admin SaaS (Pantalla Completa) -->
+    <div id="admin-overlay" class="fixed inset-0 bg-[#050505] z-50 flex flex-col modal-enter overflow-y-auto">
         <!-- Header SaaS -->
-        <header class="bg-nexa-card border-b border-white/5 px-6 py-4 sticky top-0 z-10 flex justify-between items-center">
+        <header class="bg-[#0a0a0a] border-b border-white/5 px-6 py-4 sticky top-0 z-20 flex justify-between items-center backdrop-blur-md bg-opacity-80">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center font-extrabold text-xl">
-                    N
+                <div class="w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                    <img src="image_25c2b9.png" class="w-5 h-5 object-contain" alt="Logo">
                 </div>
                 <div>
-                    <h2 class="font-bold text-white leading-tight">Dashboard Nexa</h2>
+                    <h2 class="font-bold text-white text-sm tracking-wide">Centro de Control</h2>
                     <div class="flex items-center gap-1.5 mt-0.5">
-                        <div class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
-                        <p class="text-[10px] text-gray-400 font-semibold tracking-wider uppercase">En Línea</p>
+                        <div id="cloud-status-dot" class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.6)]"></div>
+                        <p id="cloud-status-text" class="text-[9px] text-gray-400 font-bold tracking-widest uppercase">Nube Sincronizada</p>
                     </div>
                 </div>
             </div>
-            <button onclick="logoutAdmin()" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-red-500/20 hover:border-red-500/50 flex items-center justify-center transition-all">
-                <i class="ph-bold ph-power text-lg"></i>
+            <button onclick="logoutAdmin()" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 flex items-center justify-center transition-all">
+                <i class="ph-bold ph-x text-lg"></i>
             </button>
         </header>
 
         <!-- Contenido Admin -->
-        <main class="w-full max-w-xl mx-auto p-6 flex-grow">
+        <main class="w-full max-w-lg mx-auto p-6 flex-grow pb-24">
             <div class="mb-8">
-                <h3 class="text-2xl font-bold text-white">Enrutamiento de Chip</h3>
-                <p class="text-gray-400 text-sm mt-2 leading-relaxed">Configura los destinos digitales de tu tarjeta física. Los cambios aplicados se sincronizan instantáneamente al escanear el NFC.</p>
+                <h3 class="text-2xl font-bold text-white tracking-tight">Enrutamiento NFC</h3>
+                <p class="text-gray-400 text-xs mt-2 leading-relaxed font-light">Configura los destinos de tu tarjeta física. Al guardar, los cambios se fijan en la nube y se actualizan al instante para cualquier cliente que escanee el chip.</p>
             </div>
 
             <!-- Formulario de Edición SaaS -->
             <form id="admin-form" class="space-y-4">
                 
-                <!-- Input WhatsApp -->
-                <div class="bg-nexa-card p-5 rounded-[1.5rem] border border-white/5 focus-within:border-green-500/50 focus-within:shadow-[0_0_15px_rgba(34,197,94,0.1)] transition-all group">
-                    <div class="flex items-center gap-2.5 mb-3">
-                        <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
-                            <i class="ph-fill ph-whatsapp-logo text-green-500 text-lg"></i>
+                <!-- Inputs de Links (Diseño Premium) -->
+                <div class="bg-[#0a0a0a] p-1 rounded-[1.5rem] border border-white/5 shadow-xl">
+                    
+                    <div class="p-4 border-b border-white/5 group focus-within:bg-white/[0.02] transition-colors rounded-t-[1.4rem]">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="ph-fill ph-whatsapp-logo text-[#25D366] text-xl"></i>
+                            <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">WhatsApp Business</label>
                         </div>
-                        <label class="text-xs font-bold text-gray-300 uppercase tracking-widest">WhatsApp Business</label>
+                        <input type="url" id="edit-whatsapp" class="w-full bg-transparent border-none px-0 text-white focus:outline-none focus:ring-0 text-sm font-medium placeholder-gray-700" placeholder="Ej: https://wa.me/5491112345678">
                     </div>
-                    <input type="url" id="edit-whatsapp" required class="w-full bg-nexa-black border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-green-500/50 text-sm font-medium transition-colors" placeholder="https://wa.me/numero">
+
+                    <div class="p-4 border-b border-white/5 group focus-within:bg-white/[0.02] transition-colors">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="ph-fill ph-star text-[#F4B400] text-xl"></i>
+                            <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Reseñas de Google</label>
+                        </div>
+                        <input type="url" id="edit-google" class="w-full bg-transparent border-none px-0 text-white focus:outline-none focus:ring-0 text-sm font-medium placeholder-gray-700" placeholder="Link de Google Maps">
+                    </div>
+                    
+                    <div class="p-4 border-b border-white/5 group focus-within:bg-white/[0.02] transition-colors">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="ph-fill ph-instagram-logo text-[#E1306C] text-xl"></i>
+                            <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Instagram</label>
+                        </div>
+                        <input type="url" id="edit-instagram" class="w-full bg-transparent border-none px-0 text-white focus:outline-none focus:ring-0 text-sm font-medium placeholder-gray-700" placeholder="https://instagram.com/tu_cuenta">
+                    </div>
+
+                    <div class="p-4 group focus-within:bg-white/[0.02] transition-colors rounded-b-[1.4rem]">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="ph-fill ph-envelope-simple text-blue-400 text-xl"></i>
+                            <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Correo Electrónico</label>
+                        </div>
+                        <input type="email" id="edit-email" class="w-full bg-transparent border-none px-0 text-white focus:outline-none focus:ring-0 text-sm font-medium placeholder-gray-700" placeholder="contacto@empresa.com">
+                    </div>
+
                 </div>
 
-                <!-- Input Instagram -->
-                <div class="bg-nexa-card p-5 rounded-[1.5rem] border border-white/5 focus-within:border-pink-500/50 focus-within:shadow-[0_0_15px_rgba(236,72,153,0.1)] transition-all group">
-                    <div class="flex items-center gap-2.5 mb-3">
-                        <div class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center">
-                            <i class="ph-fill ph-instagram-logo text-pink-500 text-lg"></i>
-                        </div>
-                        <label class="text-xs font-bold text-gray-300 uppercase tracking-widest">Instagram Profile</label>
-                    </div>
-                    <input type="url" id="edit-instagram" required class="w-full bg-nexa-black border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-pink-500/50 text-sm font-medium transition-colors">
-                </div>
-
-                <!-- Input Google -->
-                <div class="bg-nexa-card p-5 rounded-[1.5rem] border border-white/5 focus-within:border-yellow-500/50 focus-within:shadow-[0_0_15px_rgba(234,179,8,0.1)] transition-all group">
-                    <div class="flex items-center gap-2.5 mb-3">
-                        <div class="w-8 h-8 rounded-lg bg-yellow-500/10 flex items-center justify-center">
-                            <i class="ph-fill ph-star text-yellow-500 text-lg"></i>
-                        </div>
-                        <label class="text-xs font-bold text-gray-300 uppercase tracking-widest">Google Maps (Reseñas)</label>
-                    </div>
-                    <input type="url" id="edit-google" required class="w-full bg-nexa-black border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500/50 text-sm font-medium transition-colors">
-                </div>
-                
-                <!-- Input Mail -->
-                <div class="bg-nexa-card p-5 rounded-[1.5rem] border border-white/5 focus-within:border-blue-500/50 focus-within:shadow-[0_0_15px_rgba(59,130,246,0.1)] transition-all group">
-                    <div class="flex items-center gap-2.5 mb-3">
-                        <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                            <i class="ph-fill ph-envelope-simple text-blue-500 text-lg"></i>
-                        </div>
-                        <label class="text-xs font-bold text-gray-300 uppercase tracking-widest">Correo de Contacto</label>
-                    </div>
-                    <input type="email" id="edit-email" required class="w-full bg-nexa-black border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500/50 text-sm font-medium transition-colors">
-                </div>
-
-                <div class="pt-6 pb-12 relative">
-                    <button type="submit" class="w-full bg-white text-black rounded-xl px-4 py-4 font-bold text-base hover:bg-gray-200 transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]">
-                        <i class="ph-bold ph-arrows-clockwise text-lg"></i> Sincronizar Tarjeta NFC
-                    </button>
-                    <!-- Success feedback -->
-                    <div id="save-success" class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg opacity-0 transition-opacity duration-300 flex items-center gap-1.5">
-                        <i class="ph-bold ph-check"></i> ¡Actualizado!
+                <!-- Botón de Guardado Fijo (Cloud Save) -->
+                <div class="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-[#050505] via-[#050505] to-transparent z-30">
+                    <div class="max-w-lg mx-auto relative">
+                        <button type="submit" id="save-btn" class="w-full bg-white text-black rounded-2xl px-4 py-4 font-bold text-sm hover:bg-gray-200 transition-all flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] active:scale-[0.98]">
+                            <i class="ph-bold ph-cloud-arrow-up text-lg"></i> 
+                            <span id="save-btn-text">Guardar Cambios Fijos</span>
+                        </button>
                     </div>
                 </div>
             </form>
         </main>
     </div>
 
-    <script>
-        /**
-         * NEXA - Sistema Premium Demo
-         * Manejo de animaciones de entrada, UI dinámica y base de datos local.
-         */
+    <!-- Mensaje Toast de Éxito UI -->
+    <div id="toast-msg" class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-[#1a1a1a] border border-green-500/30 text-white text-xs font-bold px-5 py-3 rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.5)] opacity-0 visibility-hidden transition-all duration-300 flex items-center gap-2.5 z-[100] translate-y-[-20px]">
+        <div class="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center">
+            <i class="ph-bold ph-check text-green-400"></i>
+        </div>
+        Guardado en la nube exitosamente
+    </div>
 
-        // 1. Simulación de carga NFC inicial
-        window.addEventListener('DOMContentLoaded', () => {
-            const intro = document.getElementById('nfc-intro');
-            // Simula el tiempo que tarda un celular en leer el NFC y renderizar (1.5s)
-            setTimeout(() => {
-                intro.style.opacity = '0';
-                intro.style.visibility = 'hidden';
-                // Renderizamos los links justo cuando desaparece la intro para que inicie la animación
-                renderPublicLinks();
-            }, 1500);
-        });
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // 2. Base de Datos Simulada (Local)
+        // Configuración y Variables Globales
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'nexa-premium-demo';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let db, auth, user;
+        let isFirebaseActive = false;
+
+        // Datos por defecto (Fallback si no hay internet o base de datos aún)
         const defaultLinks = {
             whatsapp: "https://wa.me/5491112345678",
             google: "https://maps.google.com",
             instagram: "https://instagram.com/nexa.arg",
             email: "info@nexa.app"
         };
+        let currentLinks = { ...defaultLinks };
 
         // DOM Elements
         const linksContainer = document.getElementById('links-container');
-        const loginOverlay = document.getElementById('login-overlay');
-        const adminOverlay = document.getElementById('admin-overlay');
-        const loginForm = document.getElementById('login-form');
         const adminForm = document.getElementById('admin-form');
-        const passInput = document.getElementById('admin-password');
-        const errorMsg = document.getElementById('login-error');
-        const successMsg = document.getElementById('save-success');
+        const saveBtn = document.getElementById('save-btn');
+        const saveBtnText = document.getElementById('save-btn-text');
+        const cloudStatusDot = document.getElementById('cloud-status-dot');
+        const cloudStatusText = document.getElementById('cloud-status-text');
+        const toastMsg = document.getElementById('toast-msg');
 
-        const editWhatsapp = document.getElementById('edit-whatsapp');
-        const editGoogle = document.getElementById('edit-google');
-        const editInstagram = document.getElementById('edit-instagram');
-        const editEmail = document.getElementById('edit-email');
-
-        // Leer datos
-        function getLinks() {
-            const saved = localStorage.getItem('nexa_premium_links');
-            return saved ? JSON.parse(saved) : defaultLinks;
+        // 1. Inicialización de Firebase (Si está disponible en el entorno)
+        async function initApp() {
+            if (firebaseConfig) {
+                try {
+                    const app = initializeApp(firebaseConfig);
+                    db = getFirestore(app);
+                    auth = getAuth(app);
+                    
+                    // Autenticación requerida por reglas
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                    user = auth.currentUser;
+                    isFirebaseActive = true;
+                    
+                    // Escuchar cambios en la nube en tiempo real
+                    listenToCloudData();
+                } catch (error) {
+                    console.error("Modo Local: Firebase no configurado.", error);
+                    loadLocalData();
+                }
+            } else {
+                loadLocalData();
+            }
+            
+            // Quitar pantalla de carga simulando lectura de chip NFC
+            setTimeout(() => {
+                const intro = document.getElementById('nfc-intro');
+                intro.style.opacity = '0';
+                intro.style.visibility = 'hidden';
+                if(!isFirebaseActive) renderPublicLinks(); // Render inmediato si es local
+            }, 1500);
         }
 
-        // 3. Renderizar Vista Pública Dinámica
+        // 2. Sincronización Real-Time con Firestore
+        function listenToCloudData() {
+            if (!user || !db) return;
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'links', 'main');
+            
+            onSnapshot(docRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    currentLinks = snapshot.data();
+                }
+                renderPublicLinks(); // Re-renderiza al instante cuando cambia en la nube
+            }, (error) => {
+                console.error("Error leyendo base de datos", error);
+                loadLocalData();
+            });
+        }
+
+        // Fallback a localStorage
+        function loadLocalData() {
+            const saved = localStorage.getItem('nexa_cloud_fallback');
+            if (saved) currentLinks = JSON.parse(saved);
+            renderPublicLinks();
+            
+            // Actualizar UI del admin para mostrar que es local
+            cloudStatusDot.classList.replace('bg-green-500', 'bg-yellow-500');
+            cloudStatusDot.classList.replace('shadow-[0_0_10px_rgba(34,197,94,0.6)]', 'shadow-[0_0_10px_rgba(234,179,8,0.6)]');
+            cloudStatusText.textContent = "Guardado Local";
+        }
+
+        // 3. Renderizar Botones Públicos (Diseño Premium)
         function renderPublicLinks() {
-            const data = getLinks();
             linksContainer.innerHTML = ''; 
+            const data = currentLinks;
 
             const buttonsConfig = [
-                {
-                    id: 'whatsapp',
-                    icon: 'ph-fill ph-whatsapp-logo',
-                    iconBg: 'bg-[#25D366]/10 text-[#25D366]', // Brand colors
-                    title: 'Chatear en WhatsApp',
-                    subtitle: 'Atención inmediata',
-                    url: data.whatsapp
-                },
-                {
-                    id: 'google',
-                    icon: 'ph-fill ph-star',
-                    iconBg: 'bg-[#F4B400]/10 text-[#F4B400]',
-                    title: 'Dejanos tu Reseña',
-                    subtitle: 'Calificanos en Google',
-                    url: data.google
-                },
-                {
-                    id: 'instagram',
-                    icon: 'ph-fill ph-instagram-logo',
-                    iconBg: 'bg-[#E1306C]/10 text-[#E1306C]',
-                    title: 'Ver Instagram',
-                    subtitle: 'Últimas novedades',
-                    url: data.instagram
-                },
-                {
-                    id: 'email',
-                    icon: 'ph-fill ph-envelope-simple',
-                    iconBg: 'bg-white/10 text-white',
-                    title: 'Enviar Correo',
-                    subtitle: 'Contacto comercial',
-                    url: `mailto:${data.email}`
-                }
+                { id: 'whatsapp', icon: 'ph-fill ph-whatsapp-logo', bg: 'bg-[#25D366]/10 text-[#25D366]', border: 'group-hover:border-[#25D366]/30', title: 'Chatear en WhatsApp', url: data.whatsapp },
+                { id: 'google', icon: 'ph-fill ph-star', bg: 'bg-[#F4B400]/10 text-[#F4B400]', border: 'group-hover:border-[#F4B400]/30', title: 'Calificanos en Google', url: data.google },
+                { id: 'instagram', icon: 'ph-fill ph-instagram-logo', bg: 'bg-[#E1306C]/10 text-[#E1306C]', border: 'group-hover:border-[#E1306C]/30', title: 'Nuestro Instagram', url: data.instagram },
+                { id: 'email', icon: 'ph-fill ph-envelope-simple', bg: 'bg-white/10 text-white', border: 'group-hover:border-white/30', title: 'Enviar Correo', url: `mailto:${data.email}` }
             ];
 
             buttonsConfig.forEach((btn, index) => {
-                // Cálculo de delay en cascada para la animación
-                const delay = 1.6 + (index * 0.15); 
-                
+                if(!btn.url || btn.url === 'mailto:') return; // No renderizar si está vacío
+
+                const delay = 0.2 + (index * 0.15); 
                 const a = document.createElement('a');
                 a.href = btn.url;
                 a.target = btn.id === 'email' ? '_self' : '_blank';
-                a.className = `nexa-btn w-full rounded-2xl p-4 flex items-center justify-between group no-underline stagger-item cursor-pointer`;
+                a.className = `nexa-btn w-full rounded-2xl p-4 flex items-center justify-between group no-underline stagger-item cursor-pointer backdrop-blur-md`;
                 a.style.animationDelay = `${delay}s`;
                 
                 a.innerHTML = `
                     <div class="flex items-center gap-4">
-                        <div class="icon-box w-12 h-12 rounded-xl flex items-center justify-center shadow-inner ${btn.iconBg} border border-current/20">
+                        <div class="icon-box w-12 h-12 rounded-xl flex items-center justify-center shadow-inner ${btn.bg} border border-transparent ${btn.border}">
                             <i class="${btn.icon} text-2xl"></i>
                         </div>
                         <div>
                             <h3 class="font-bold text-white text-[1.05rem] leading-tight">${btn.title}</h3>
-                            <p class="text-[11px] text-gray-400 font-medium mt-0.5 tracking-wide uppercase">${btn.subtitle}</p>
+                            <p class="text-[10px] text-gray-400 font-medium mt-0.5 tracking-wide uppercase group-hover:text-gray-300 transition-colors">Conectar ahora</p>
                         </div>
                     </div>
-                    <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors border border-white/5">
-                        <i class="ph-bold ph-arrow-up-right text-sm"></i>
+                    <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all border border-white/5 shadow-sm group-hover:shadow-[0_0_15px_rgba(255,255,255,0.4)]">
+                        <i class="ph-bold ph-caret-right text-sm"></i>
                     </div>
                 `;
                 linksContainer.appendChild(a);
             });
         }
 
-        // 4. Lógica de Modales (Animaciones suaves)
-        function showLogin() {
-            loginOverlay.classList.add('modal-enter-active');
-            passInput.value = '';
-            errorMsg.classList.add('hidden');
-            setTimeout(() => passInput.focus(), 400);
-        }
-
-        function hideLogin() {
-            loginOverlay.classList.remove('modal-enter-active');
-        }
-
-        function showAdmin() {
-            hideLogin();
-            setTimeout(() => {
-                adminOverlay.classList.add('modal-enter-active');
-                // Cargar datos
-                const data = getLinks();
-                editWhatsapp.value = data.whatsapp || defaultLinks.whatsapp;
-                editGoogle.value = data.google;
-                editInstagram.value = data.instagram;
-                editEmail.value = data.email;
-            }, 300); // Pequeño delay para que cierre el anterior
-        }
-
-        function logoutAdmin() {
-            adminOverlay.classList.remove('modal-enter-active');
-        }
-
-        // 5. Formularios
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (passInput.value === 'admin') {
-                showAdmin();
-            } else {
-                errorMsg.classList.remove('hidden');
-                passInput.classList.add('border-red-500/50', 'text-red-400');
-                // Shake sutil
-                loginForm.style.transform = 'translateX(10px)';
-                setTimeout(() => loginForm.style.transform = 'translateX(-10px)', 100);
-                setTimeout(() => loginForm.style.transform = 'translateX(0)', 200);
-            }
-        });
-
-        passInput.addEventListener('input', () => {
-            errorMsg.classList.add('hidden');
-            passInput.classList.remove('border-red-500/50', 'text-red-400');
-        });
-
-        adminForm.addEventListener('submit', (e) => {
+        // 4. Lógica de Guardado (Botón de Guardado Fijo)
+        adminForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            // UI de carga
+            saveBtn.disabled = true;
+            saveBtnText.innerHTML = '<i class="ph-bold ph-spinner animate-spin-slow"></i> Guardando...';
+            saveBtn.classList.add('opacity-80');
+
             const newLinks = {
-                whatsapp: editWhatsapp.value,
-                google: editGoogle.value,
-                instagram: editInstagram.value,
-                email: editEmail.value
+                whatsapp: document.getElementById('edit-whatsapp').value,
+                google: document.getElementById('edit-google').value,
+                instagram: document.getElementById('edit-instagram').value,
+                email: document.getElementById('edit-email').value
             };
 
-            localStorage.setItem('nexa_premium_links', JSON.stringify(newLinks));
-            
-            // Re-render en segundo plano sin la animación inicial
-            const data = newLinks;
-            const anchors = linksContainer.querySelectorAll('a');
-            if(anchors.length === 4) {
-                anchors[0].href = data.whatsapp;
-                anchors[1].href = data.google;
-                anchors[2].href = data.instagram;
-                anchors[3].href = `mailto:${data.email}`;
+            if (isFirebaseActive && user) {
+                try {
+                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'links', 'main');
+                    await setDoc(docRef, newLinks);
+                    showToast();
+                } catch (error) {
+                    console.error("Error guardando en la nube", error);
+                    localStorage.setItem('nexa_cloud_fallback', JSON.stringify(newLinks));
+                    showToast();
+                }
             } else {
-                 renderPublicLinks(); // Fallback
+                // Fallback Local
+                localStorage.setItem('nexa_cloud_fallback', JSON.stringify(newLinks));
+                currentLinks = newLinks;
+                renderPublicLinks();
+                showToast();
             }
 
-            // Animación de éxito
-            successMsg.style.opacity = '1';
-            successMsg.style.transform = 'translate(-50%, -20px)';
-            
+            // Restaurar botón
             setTimeout(() => {
-                successMsg.style.opacity = '0';
-                successMsg.style.transform = 'translate(-50%, 0)';
-            }, 2500);
+                saveBtn.disabled = false;
+                saveBtnText.innerHTML = 'Guardar Cambios Fijos';
+                saveBtn.classList.remove('opacity-80');
+            }, 600);
         });
 
+        // Utilidades UI
+        function showToast() {
+            toastMsg.style.opacity = '1';
+            toastMsg.style.visibility = 'visible';
+            toastMsg.style.transform = 'translate(-50%, 0)';
+            
+            setTimeout(() => {
+                toastMsg.style.opacity = '0';
+                toastMsg.style.visibility = 'hidden';
+                toastMsg.style.transform = 'translate(-50%, -20px)';
+            }, 3000);
+        }
+
+        // Exponer funciones globales para los botones onclick del HTML
+        window.showLogin = () => {
+            document.getElementById('login-overlay').classList.add('modal-enter-active');
+            document.getElementById('admin-password').value = '';
+            document.getElementById('login-error').classList.add('hidden');
+            setTimeout(() => document.getElementById('admin-password').focus(), 400);
+        };
+
+        window.hideLogin = () => {
+            document.getElementById('login-overlay').classList.remove('modal-enter-active');
+        };
+
+        window.showAdmin = () => {
+            window.hideLogin();
+            setTimeout(() => {
+                document.getElementById('admin-overlay').classList.add('modal-enter-active');
+                // Cargar datos actuales en los inputs
+                document.getElementById('edit-whatsapp').value = currentLinks.whatsapp || '';
+                document.getElementById('edit-google').value = currentLinks.google || '';
+                document.getElementById('edit-instagram').value = currentLinks.instagram || '';
+                document.getElementById('edit-email').value = currentLinks.email || '';
+            }, 300);
+        };
+
+        window.logoutAdmin = () => {
+            document.getElementById('admin-overlay').classList.remove('modal-enter-active');
+        };
+
+        // Lógica Login
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const passInput = document.getElementById('admin-password');
+            if (passInput.value === 'admin') {
+                window.showAdmin();
+            } else {
+                const errorMsg = document.getElementById('login-error');
+                errorMsg.classList.remove('hidden');
+                passInput.classList.add('border-red-500/50', 'text-red-400');
+            }
+        });
+
+        document.getElementById('admin-password').addEventListener('input', (e) => {
+            document.getElementById('login-error').classList.add('hidden');
+            e.target.classList.remove('border-red-500/50', 'text-red-400');
+        });
+
+        // Arrancar
+        initApp();
     </script>
 </body>
 </html>
