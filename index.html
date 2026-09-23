@@ -204,7 +204,7 @@
             <div class="wave-ring"></div>
             <div class="wave-ring"></div>
             <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center z-10 shadow-[0_0_30px_rgba(255,255,255,0.3)]">
-                <img src="image_25c2b9.png" class="w-6 h-6 object-contain" alt="Nexa" onerror="this.src='https://placehold.co/100x100/000000/ffffff?text=N'">
+                <img src="image_25c2b9.png" class="w-6 h-6 object-contain filter invert" alt="Nexa" onerror="this.src='https://placehold.co/100x100/000000/ffffff?text=N'">
             </div>
         </div>
         <h2 class="text-white font-bold tracking-[0.3em] uppercase text-xs animate-pulse">Conectando Dispositivo</h2>
@@ -289,13 +289,13 @@
         <header class="bg-[#0a0a0a] border-b border-white/5 px-6 py-4 sticky top-0 z-20 flex justify-between items-center backdrop-blur-md bg-opacity-80">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.2)]">
-                    <img src="image_25c2b9.png" class="w-5 h-5 object-contain" alt="Logo">
+                    <img src="image_25c2b9.png" class="w-5 h-5 object-contain filter invert" alt="Logo">
                 </div>
                 <div>
                     <h2 class="font-bold text-white text-sm tracking-wide">Centro de Control</h2>
                     <div class="flex items-center gap-1.5 mt-0.5">
-                        <div id="cloud-status-dot" class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.6)]"></div>
-                        <p id="cloud-status-text" class="text-[9px] text-gray-400 font-bold tracking-widest uppercase">Nube Sincronizada</p>
+                        <div id="cloud-status-dot" class="w-1.5 h-1.5 bg-yellow-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(234,179,8,0.6)]"></div>
+                        <p id="cloud-status-text" class="text-[9px] text-gray-400 font-bold tracking-widest uppercase">Guardado Local</p>
                     </div>
                 </div>
             </div>
@@ -308,7 +308,7 @@
         <main class="w-full max-w-lg mx-auto p-6 flex-grow pb-24">
             <div class="mb-8">
                 <h3 class="text-2xl font-bold text-white tracking-tight">Enrutamiento NFC</h3>
-                <p class="text-gray-400 text-xs mt-2 leading-relaxed font-light">Configura los destinos de tu tarjeta física. Al guardar, los cambios se fijan en la nube y se actualizan al instante para cualquier cliente que escanee el chip.</p>
+                <p class="text-gray-400 text-xs mt-2 leading-relaxed font-light">Configura los destinos de tu tarjeta física. Al guardar, los cambios se fijarán en la memoria de este dispositivo para demostraciones en vivo.</p>
             </div>
 
             <!-- Formulario de Edición SaaS -->
@@ -351,12 +351,12 @@
 
                 </div>
 
-                <!-- Botón de Guardado Fijo (Cloud Save) -->
+                <!-- Botón de Guardado Fijo (Local Save) -->
                 <div class="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-[#050505] via-[#050505] to-transparent z-30">
                     <div class="max-w-lg mx-auto relative">
                         <button type="submit" id="save-btn" class="w-full bg-white text-black rounded-2xl px-4 py-4 font-bold text-sm hover:bg-gray-200 transition-all flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] active:scale-[0.98]">
-                            <i class="ph-bold ph-cloud-arrow-up text-lg"></i> 
-                            <span id="save-btn-text">Guardar Cambios Fijos</span>
+                            <i class="ph-bold ph-hard-drives text-lg"></i> 
+                            <span id="save-btn-text">Guardar Cambios Locales</span>
                         </button>
                     </div>
                 </div>
@@ -369,23 +369,11 @@
         <div class="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center">
             <i class="ph-bold ph-check text-green-400"></i>
         </div>
-        Guardado en la nube exitosamente
+        Guardado localmente con éxito
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Configuración y Variables Globales
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'nexa-premium-demo';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-        let db, auth, user;
-        let isFirebaseActive = false;
-
-        // Datos por defecto (Fallback si no hay internet o base de datos aún)
+    <script>
+        // Datos por defecto (Fallback inicial)
         const defaultLinks = {
             whatsapp: "https://wa.me/5491112345678",
             google: "https://maps.google.com",
@@ -399,75 +387,30 @@
         const adminForm = document.getElementById('admin-form');
         const saveBtn = document.getElementById('save-btn');
         const saveBtnText = document.getElementById('save-btn-text');
-        const cloudStatusDot = document.getElementById('cloud-status-dot');
-        const cloudStatusText = document.getElementById('cloud-status-text');
         const toastMsg = document.getElementById('toast-msg');
 
-        // 1. Inicialización de Firebase (Si está disponible en el entorno)
-        async function initApp() {
-            if (firebaseConfig) {
-                try {
-                    const app = initializeApp(firebaseConfig);
-                    db = getFirestore(app);
-                    auth = getAuth(app);
-                    
-                    // Autenticación requerida por reglas
-                    if (initialAuthToken) {
-                        await signInWithCustomToken(auth, initialAuthToken);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-                    user = auth.currentUser;
-                    isFirebaseActive = true;
-                    
-                    // Escuchar cambios en la nube en tiempo real
-                    listenToCloudData();
-                } catch (error) {
-                    console.error("Modo Local: Firebase no configurado.", error);
-                    loadLocalData();
-                }
-            } else {
-                loadLocalData();
-            }
+        // 1. Inicialización (Simular carga y leer datos locales)
+        function initApp() {
+            loadLocalData();
             
             // Quitar pantalla de carga simulando lectura de chip NFC
             setTimeout(() => {
                 const intro = document.getElementById('nfc-intro');
                 intro.style.opacity = '0';
                 intro.style.visibility = 'hidden';
-                if(!isFirebaseActive) renderPublicLinks(); // Render inmediato si es local
+                renderPublicLinks(); // Renderizar botones con datos cargados
             }, 1500);
         }
 
-        // 2. Sincronización Real-Time con Firestore
-        function listenToCloudData() {
-            if (!user || !db) return;
-            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'links', 'main');
-            
-            onSnapshot(docRef, (snapshot) => {
-                if (snapshot.exists()) {
-                    currentLinks = snapshot.data();
-                }
-                renderPublicLinks(); // Re-renderiza al instante cuando cambia en la nube
-            }, (error) => {
-                console.error("Error leyendo base de datos", error);
-                loadLocalData();
-            });
-        }
-
-        // Fallback a localStorage
+        // Cargar datos de localStorage (Persistencia Local)
         function loadLocalData() {
-            const saved = localStorage.getItem('nexa_cloud_fallback');
-            if (saved) currentLinks = JSON.parse(saved);
-            renderPublicLinks();
-            
-            // Actualizar UI del admin para mostrar que es local
-            cloudStatusDot.classList.replace('bg-green-500', 'bg-yellow-500');
-            cloudStatusDot.classList.replace('shadow-[0_0_10px_rgba(34,197,94,0.6)]', 'shadow-[0_0_10px_rgba(234,179,8,0.6)]');
-            cloudStatusText.textContent = "Guardado Local";
+            const saved = localStorage.getItem('nexa_local_links');
+            if (saved) {
+                currentLinks = JSON.parse(saved);
+            }
         }
 
-        // 3. Renderizar Botones Públicos (Diseño Premium)
+        // 2. Renderizar Botones Públicos (Diseño Premium)
         function renderPublicLinks() {
             linksContainer.innerHTML = ''; 
             const data = currentLinks;
@@ -476,11 +419,12 @@
                 { id: 'whatsapp', icon: 'ph-fill ph-whatsapp-logo', bg: 'bg-[#25D366]/10 text-[#25D366]', border: 'group-hover:border-[#25D366]/30', title: 'Chatear en WhatsApp', url: data.whatsapp },
                 { id: 'google', icon: 'ph-fill ph-star', bg: 'bg-[#F4B400]/10 text-[#F4B400]', border: 'group-hover:border-[#F4B400]/30', title: 'Calificanos en Google', url: data.google },
                 { id: 'instagram', icon: 'ph-fill ph-instagram-logo', bg: 'bg-[#E1306C]/10 text-[#E1306C]', border: 'group-hover:border-[#E1306C]/30', title: 'Nuestro Instagram', url: data.instagram },
-                { id: 'email', icon: 'ph-fill ph-envelope-simple', bg: 'bg-white/10 text-white', border: 'group-hover:border-white/30', title: 'Enviar Correo', url: `mailto:${data.email}` }
+                { id: 'email', icon: 'ph-fill ph-envelope-simple', bg: 'bg-white/10 text-white', border: 'group-hover:border-white/30', title: 'Enviar Correo', url: (data.email && data.email !== "") ? `mailto:${data.email}` : '' }
             ];
 
             buttonsConfig.forEach((btn, index) => {
-                if(!btn.url || btn.url === 'mailto:') return; // No renderizar si está vacío
+                // Validación estricta para no renderizar botones vacíos o con URLs malformadas
+                if(!btn.url || btn.url.trim() === '' || btn.url === 'mailto:') return;
 
                 const delay = 0.2 + (index * 0.15); 
                 const a = document.createElement('a');
@@ -507,15 +451,16 @@
             });
         }
 
-        // 4. Lógica de Guardado (Botón de Guardado Fijo)
-        adminForm.addEventListener('submit', async (e) => {
+        // 3. Lógica de Guardado Local
+        adminForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            // UI de carga
+            // UI de carga simulada para feedback
             saveBtn.disabled = true;
             saveBtnText.innerHTML = '<i class="ph-bold ph-spinner animate-spin-slow"></i> Guardando...';
             saveBtn.classList.add('opacity-80');
 
+            // Recopilar nuevos enlaces
             const newLinks = {
                 whatsapp: document.getElementById('edit-whatsapp').value,
                 google: document.getElementById('edit-google').value,
@@ -523,28 +468,18 @@
                 email: document.getElementById('edit-email').value
             };
 
-            if (isFirebaseActive && user) {
-                try {
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'links', 'main');
-                    await setDoc(docRef, newLinks);
-                    showToast();
-                } catch (error) {
-                    console.error("Error guardando en la nube", error);
-                    localStorage.setItem('nexa_cloud_fallback', JSON.stringify(newLinks));
-                    showToast();
-                }
-            } else {
-                // Fallback Local
-                localStorage.setItem('nexa_cloud_fallback', JSON.stringify(newLinks));
-                currentLinks = newLinks;
-                renderPublicLinks();
-                showToast();
-            }
+            // Guardar en localStorage de forma persistente
+            localStorage.setItem('nexa_local_links', JSON.stringify(newLinks));
+            currentLinks = newLinks;
+            
+            // Actualizar vista pública
+            renderPublicLinks();
 
-            // Restaurar botón
+            // Restaurar botón y mostrar éxito
             setTimeout(() => {
+                showToast();
                 saveBtn.disabled = false;
-                saveBtnText.innerHTML = 'Guardar Cambios Fijos';
+                saveBtnText.innerHTML = 'Guardar Cambios Locales';
                 saveBtn.classList.remove('opacity-80');
             }, 600);
         });
@@ -562,7 +497,7 @@
             }, 3000);
         }
 
-        // Exponer funciones globales para los botones onclick del HTML
+        // Funciones Globales UI
         window.showLogin = () => {
             document.getElementById('login-overlay').classList.add('modal-enter-active');
             document.getElementById('admin-password').value = '';
@@ -590,7 +525,7 @@
             document.getElementById('admin-overlay').classList.remove('modal-enter-active');
         };
 
-        // Lógica Login
+        // Lógica Login Segura (Demostración)
         document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const passInput = document.getElementById('admin-password');
@@ -608,7 +543,7 @@
             e.target.classList.remove('border-red-500/50', 'text-red-400');
         });
 
-        // Arrancar
+        // Arrancar la aplicación
         initApp();
     </script>
 </body>
