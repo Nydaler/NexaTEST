@@ -208,7 +208,7 @@
             </div>
         </div>
         <h2 class="text-white font-bold tracking-[0.3em] uppercase text-xs animate-pulse">Conectando a la Nube</h2>
-        <p class="text-gray-500 text-[10px] mt-3 uppercase tracking-widest" id="nfc-status">Sincronizando datos...</p>
+        <p class="text-gray-500 text-[10px] mt-3 uppercase tracking-widest" id="nfc-status">Iniciando conexión segura...</p>
     </div>
 
     <!-- Fondo de Orbes -->
@@ -414,15 +414,18 @@
 
         async function initApp() {
             try {
+                document.getElementById('nfc-status').innerText = "Iniciando sesión segura...";
+                
+                // SOLUCIÓN: Iniciamos sesión ANTES de intentar leer la base de datos
+                await signInAnonymously(auth);
+                
                 document.getElementById('nfc-status').innerText = "Descargando datos de Firebase...";
                 const docSnap = await getDoc(linksDocRef);
                 
                 if (docSnap.exists()) {
                     currentLinks = docSnap.data();
                 } else {
-                    // Si el documento no existe (primera vez), crearlo con los links por defecto
-                    // Necesitamos autenticarnos temporalmente para escribir la primera vez
-                    await signInAnonymously(auth);
+                    // Si no existe, creamos el documento con links por defecto
                     await setDoc(linksDocRef, defaultLinks);
                     currentLinks = { ...defaultLinks };
                 }
@@ -431,7 +434,7 @@
             } catch (error) {
                 console.error("Error de conexión a Firebase:", error);
                 document.getElementById('nfc-status').innerText = "Modo offline activado";
-                showErrorToast("Error al conectar con la base de datos.");
+                showErrorToast("Error: Revisa que Auth Anónimo esté activado.");
             }
             
             setTimeout(() => {
@@ -496,8 +499,7 @@
             };
 
             try {
-                // Iniciar sesión anónima antes de escribir para cumplir con las reglas de seguridad
-                await signInAnonymously(auth);
+                // Ya tenemos sesión iniciada gracias a initApp(), solo guardamos
                 await setDoc(linksDocRef, newLinks);
                 
                 currentLinks = newLinks;
